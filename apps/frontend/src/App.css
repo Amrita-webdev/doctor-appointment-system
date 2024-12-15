@@ -74,12 +74,11 @@ body {
   height: 300px;
 }
 .loginContainerLeft{
-  width: 40%;
-  border: 1px solid red;
+  flex-grow: 1;
 }
 
 .loginContainerRight{
-  border: 1px solid red;
+  width: 50%;
 }
 
 .loginContainerOuter{
@@ -89,7 +88,7 @@ body {
   align-items: center;
   justify-content: space-around;
   height: 400px;
-  padding: 0.5rem;
+  padding: 0.5rem 2rem;
 }
 .spin-loader {
   display: inline-block;
