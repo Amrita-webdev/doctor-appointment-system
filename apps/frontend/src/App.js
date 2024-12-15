@@ -5,27 +5,29 @@ import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/AdminDashboard';
 import DoctorDashboard from './pages/DoctorDashboard';
 import ProtectedRoute from './components/ProtectedRoutes';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginPage setIsAuthenticated={setIsAuthenticated}/>} />
-          <Route path="/admin" element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
-              <AdminDashboard/>
+      <ErrorBoundary>
+        <Router>
+          <Routes>
+            <Route path="/" element={<LoginPage setIsAuthenticated={setIsAuthenticated}/>} />
+            <Route path="/admin" element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <AdminDashboard/>
+              </ProtectedRoute>
+              } />
+            <Route path="/doctor" element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <DoctorDashboard/>
             </ProtectedRoute>
             } />
-          <Route path="/doctor" element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
-              <DoctorDashboard/>
-          </ProtectedRoute>
-          } />
-          {/* Add more routes as needed */}
-        </Routes>
-      </Router>
+          </Routes>
+        </Router>
+      </ErrorBoundary>
     </AuthProvider>
   );
 }

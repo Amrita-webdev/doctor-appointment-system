@@ -68,13 +68,28 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: white;
+  min-height: 100vh;
+  background-color: grey;
   border-radius: 1rem;
   height: 300px;
 }
-.loginContainer{
-  width: 40%
+.loginContainerLeft{
+  width: 40%;
+  border: 1px solid red;
+}
+
+.loginContainerRight{
+  border: 1px solid red;
+}
+
+.loginContainerOuter{
+  background-color: white;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 400px;
+  padding: 0.5rem;
 }
 .spin-loader {
   display: inline-block;
@@ -196,4 +211,16 @@ body {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+}
+
+.search-input{
+  width: 400px;
+  height: 2rem;
+  border: 2px solid rgb(131, 123, 123);
+  border-radius: 1rem;
+  padding: 0 0.75rem;
+}
+
+.table-controls{
+  padding: 1.5rem 0.2rem;
 }

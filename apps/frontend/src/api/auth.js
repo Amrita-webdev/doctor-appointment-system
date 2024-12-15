@@ -41,7 +41,6 @@ const logoutUser = async () => {
 
 const fetchAppointments = async (page, limit) => {
   try {
-      console.log(token, 'token')
       const response = await axios.get(`${API_BASE_URL}/appointments`, {
       params: { page, limit },
       headers: {
@@ -55,7 +54,6 @@ const fetchAppointments = async (page, limit) => {
 };
 const fetchDoctors = async() => {
   try {
-    console.log(token, 'token')
     const response = await axios.get(`${API_BASE_URL}/doctors`, {
     headers: {
         Authorization: `Bearer ${token}`,

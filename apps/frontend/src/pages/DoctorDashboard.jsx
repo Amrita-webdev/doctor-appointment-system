@@ -46,7 +46,6 @@ const DoctorDashboard = () => {
     setPagination((prev) => ({ ...prev, currentPage: page }));
   };
 
-  console.log(appointments)
 
   return (
     <div>

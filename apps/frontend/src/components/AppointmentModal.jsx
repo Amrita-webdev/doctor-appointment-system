@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import dayjs from 'dayjs';
 import { Modal, TextField, Button, MenuItem, Select, InputLabel, FormControl, FormHelperText } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
@@ -16,8 +17,6 @@ const AppointmentModal = ({
   loggedInUser,
   doctors
 }) => {
-
-    console.log(initialData, 'initialData')
     
     const modalStyles = {
         position: 'absolute',
@@ -108,8 +107,6 @@ const AppointmentModal = ({
   const handleSubmit = async () => {
     if (validateForm()) {
         const appointment = initialData ? await editAppointment(formData.id, formData) : await createAppointment(formData)
-        console.log(formData, 'formData')
-        console.log('Submitted Appointment:', appointment);
         if(appointment){
             setAppointments((prev) =>
                 initialData
@@ -168,6 +165,7 @@ const AppointmentModal = ({
               label="Date"
               value={formData.date}
               onChange={handleDateChange}
+              defaultValue={dayjs('2022-04-17')}
               renderInput={(params) => <TextField {...params} error={!!errors.date} helperText={errors.date} fullWidth />}
             />
             </LocalizationProvider>
@@ -190,9 +188,10 @@ const AppointmentModal = ({
 
           <div style={formGroupStyles}>
             <FormControl fullWidth error={!!errors.appointmentType}>
-              <InputLabel>Appointment Type</InputLabel>
+              <InputLabel id="appointment-type-select">Appointment Type</InputLabel>
               <Select
                 name="appointmentType"
+                labelId="appointment-type-select"
                 value={formData.appointmentType}
                 onChange={handleInputChange}
                 label="Appointment Type"

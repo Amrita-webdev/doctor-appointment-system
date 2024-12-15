@@ -24,7 +24,6 @@ const LoginPage = ({setIsAuthenticated}) => {
       setLoading(true)
       const response = await loginUser({ email, password, role });
       localStorage.setItem('token', response.token);
-      console.log(response)
       setIsAuthenticated(true)
       setRole(response.role)
       if (response.role === "admin") {
@@ -40,13 +39,16 @@ const LoginPage = ({setIsAuthenticated}) => {
     }
   };
   return (
-    <div>
+    <div className='loginPage'>
       {loading ? <Loader /> : 
-      <div className='loginPage'>
-      <div className='loginContainer'>
-        <h3>AI powered medical scribe & coding engine to regain your time and increase revenue.</h3>
+      <div className='loginContainerOuter'>
+        <div className='loginContainerLeft'>
+          <img src='https://www.medvise.ai/images/Lgo_huea9216fc2dd81881d4e6771d40debcd2_42546_500x0_resize_q75_h2_box_3.webp' />
+          <h2>AI powered medical scribe & coding engine to regain your time and increase revenue.</h2>
+        </div>
+        <div className='loginContainerRight'>
+        <LoginForm handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} setRole={setRole} error={error} email={email} password={password} role={role}/>
       </div>
-      <LoginForm handleSubmit={handleSubmit} setEmail={setEmail} setPassword={setPassword} setRole={setRole} error={error} email={email} password={password} role={role}/>
     </div>
       }
       </div>

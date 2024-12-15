@@ -22,15 +22,14 @@ const doctors = [
 ]
 
 const appointments = [
-  { id: 1, doctorId: 2, doctorName: 'Dr. Smith', patientName: 'John Doe', date: '2024-12-12', time: '10:00 AM', appointmentType: 'virtual', notes: 'Initial consultation' },
-  { id: 2, doctorId: 2, doctorName: 'Dr. Smith', patientName: 'Amrita Mazumder', date: '2024-12-14', time: '11:00 AM', appointmentType: 'virtual', notes: 'Initial consultation' },
-  { id: 3, doctorId: 3, doctorName: 'Dr. Chakraborty', patientName: 'Ashish Singh', date: '2024-12-14', time: '2:00 PM', appointmentType: 'virtual', notes: 'Initial consultation' },
-  { id: 4, doctorId: 4, doctorName: 'Dr. Riya', patientName: 'Dia Mirza', date: '2024-12-13', time: '12:00 AM', appointmentType: 'virtual', notes: 'Initial consultation' },
-  { id: 5, doctorId: 4, doctorName: 'Dr. Riya', patientName: 'Kareen Kapoor', date: '2024-12-15', time: '9:00 AM', appointmentType: 'virtual', notes: 'Initial consultation' },
+  { id: 1, doctorId: 2, doctorName: 'Dr. Smith', patientName: 'John Doe', date: '2024-12-12', time: '10:00 AM', appointmentType: 'Virtual', notes: 'Initial consultation' },
+  { id: 2, doctorId: 2, doctorName: 'Dr. Smith', patientName: 'Amrita Mazumder', date: '2024-12-14', time: '11:00 AM', appointmentType: 'Virtual', notes: 'Initial consultation' },
+  { id: 3, doctorId: 3, doctorName: 'Dr. Chakraborty', patientName: 'Ashish Singh', date: '2024-12-14', time: '2:00 PM', appointmentType: 'Virtual', notes: 'Initial consultation' },
+  { id: 4, doctorId: 4, doctorName: 'Dr. Riya', patientName: 'Dia Mirza', date: '2024-12-13', time: '12:00 AM', appointmentType: 'Virtual', notes: 'Initial consultation' },
+  { id: 5, doctorId: 4, doctorName: 'Dr. Riya', patientName: 'Kareen Kapoor', date: '2024-12-15', time: '9:00 AM', appointmentType: 'Virtual', notes: 'Initial consultation' },
 ];
 
 const SECRET_KEY = process.env.SECRET_KEY
-console.log(SECRET_KEY)
 
 // Middleware to authenticate and authorize users
 function authenticate(req, res, next) {
