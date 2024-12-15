@@ -10,11 +10,23 @@ app.use(bodyParser.json());
 
 const users = [
   { id: 1, name: 'Admin User', email: 'admin@example.com', password: 'admin123', role: 'admin' },
-  { id: 2, name: 'Dr. Smith', email: 'doctor@example.com', password: 'doctor123', role: 'doctor' }
+  { id: 2, name: 'Dr. Smith', email: 'smith@example.com', password: 'doctor123', role: 'doctor' },
+  { id: 3, name: 'Dr. Chakraborty', email: 'chakraborty@example.com', password: 'doctor123', role: 'doctor' },
+  { id: 4, name: 'Dr. Riya', email: 'riya@example.com', password: 'doctor123', role: 'doctor' }
 ];
 
+const doctors = [
+  { id: 2, name: 'Dr. Smith', email: 'smith@example.com', password: 'doctor123', role: 'doctor' },
+  { id: 3, name: 'Dr. Chakraborty', email: 'chakraborty@example.com', password: 'doctor123', role: 'doctor' },
+  { id: 4, name: 'Dr. Riya', email: 'riya@example.com', password: 'doctor123', role: 'doctor' }
+]
+
 const appointments = [
-  { id: 1, doctorId: 2, date: '2024-12-12', time: '10:00 AM', appointmentType: 'virtual', notes: 'Initial consultation' }
+  { id: 1, doctorId: 2, doctorName: 'Dr. Smith', patientName: 'John Doe', date: '2024-12-12', time: '10:00 AM', appointmentType: 'virtual', notes: 'Initial consultation' },
+  { id: 2, doctorId: 2, doctorName: 'Dr. Smith', patientName: 'Amrita Mazumder', date: '2024-12-14', time: '11:00 AM', appointmentType: 'virtual', notes: 'Initial consultation' },
+  { id: 3, doctorId: 3, doctorName: 'Dr. Chakraborty', patientName: 'Ashish Singh', date: '2024-12-14', time: '2:00 PM', appointmentType: 'virtual', notes: 'Initial consultation' },
+  { id: 4, doctorId: 4, doctorName: 'Dr. Riya', patientName: 'Dia Mirza', date: '2024-12-13', time: '12:00 AM', appointmentType: 'virtual', notes: 'Initial consultation' },
+  { id: 5, doctorId: 4, doctorName: 'Dr. Riya', patientName: 'Kareen Kapoor', date: '2024-12-15', time: '9:00 AM', appointmentType: 'virtual', notes: 'Initial consultation' },
 ];
 
 const SECRET_KEY = process.env.SECRET_KEY
@@ -22,7 +34,7 @@ console.log(SECRET_KEY)
 
 // Middleware to authenticate and authorize users
 function authenticate(req, res, next) {
-  const token = req.headers['authorization'];
+  const token = req.headers['authorization']?.split(' ')[1]
   if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
   try {
@@ -53,8 +65,45 @@ app.post('/api/auth/login', (req, res) => {
   }
 
   const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
-  res.json({ token, role: user.role });
+  res.json({ token, role: user.role, id: user.id });
 });
+
+// Blacklist storage (in-memory for now)
+let tokenBlacklist = [];
+
+// Logout API
+app.post('/api/auth/logout', (req, res) => {
+  const token = req.headers['authorization'];
+  
+  if (!token) {
+    return res.status(400).json({ message: 'Token required' });
+  }
+
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, SECRET_KEY);
+
+    // Add the token to the blacklist
+    tokenBlacklist.push(token);
+
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (error) {
+    res.status(400).json({ message: 'Invalid token' });
+  }
+});
+
+// Middleware to check if the token is blacklisted
+function checkBlacklist(req, res, next) {
+  const token = req.headers['authorization'];
+  if (tokenBlacklist.includes(token)) {
+    return res.status(401).json({ message: 'Token is blacklisted. Please login again.' });
+  }
+  next();
+}
+
+// Apply checkBlacklist middleware before routes requiring authentication
+app.use('/api/appointments', authenticate, checkBlacklist);
+
 
 // List appointments (paginated)
 app.get('/api/appointments', authenticate, (req, res) => {
@@ -77,6 +126,13 @@ app.get('/api/appointments', authenticate, (req, res) => {
   });
 });
 
+app.get('/api/doctors', authenticate, (req, res) => {
+  let result = doctors;
+  res.json({
+    data: result
+  });
+});
+
 // Get appointments for a specific doctor
 app.get('/api/appointments/doctor/:doctorId', authenticate, authorize(['admin', 'doctor']), (req, res) => {
   const { doctorId } = req.params;
@@ -92,7 +148,7 @@ app.get('/api/appointments/doctor/:doctorId', authenticate, authorize(['admin', 
 
 // Create appointment
 app.post('/api/appointments', authenticate, authorize(['admin', 'doctor']), (req, res) => {
-  const { doctorId, date, time, appointmentType, notes } = req.body;
+  const { patientName, doctorId, date, time, appointmentType, notes } = req.body;
 
   if (req.user.role === 'doctor' && req.user.id !== doctorId) {
     return res.status(403).json({ message: 'Doctors can only create appointments for themselves.' });
@@ -104,6 +160,7 @@ app.post('/api/appointments', authenticate, authorize(['admin', 'doctor']), (req
     date,
     time,
     appointmentType,
+    patientName,
     notes
   };
 

@@ -23,12 +23,14 @@ const LoginPage = ({setIsAuthenticated}) => {
     try {
       setLoading(true)
       const response = await loginUser({ email, password, role });
+      localStorage.setItem('token', response.token);
+      console.log(response)
       setIsAuthenticated(true)
       setRole(response.role)
       if (response.role === "admin") {
-        navigate("/admin", { state: { user: email } });
+        navigate("/admin", { state: { user: email, role: response.role, id: response.id } });
       } else if (response.role === "doctor") {
-        navigate("/doctor", { state: { user: email } });
+        navigate("/doctor", { state: { user: email, role: response.role, id: response.id } });
       }
     } catch (error) {
       console.log(error)

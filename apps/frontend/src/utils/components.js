@@ -13,5 +13,13 @@ const Loader = ({ size }) => {
     );
   };
 
-  export {Loader}
+  const Button = ({children, handleSubmit, color, backgroundColor, fontStyle}) => {
+    return (
+        <button className='button__style' style={{ color: color, backgroundColor: backgroundColor, fontStyle: fontStyle }} onClick={handleSubmit}>
+            {children}
+        </button>
+    )
+  }
+
+  export {Loader, Button}
 
