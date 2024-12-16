@@ -1,4 +1,4 @@
-# Project Name
+# Docctor Appointent System
 
 ## Installation and Setup
 
@@ -57,11 +57,12 @@ Confirm that the backend service dependencies (e.g., database, API endpoints) ar
 
 ### Start the backend:
 
-    npm start
+    cd ../apps/backend
+    node server.js
 
 ### Start the frontend:
 
-    cd ../frontend
+    cd ../apps/frontend
     npm start
 
 ### Access the Application:
